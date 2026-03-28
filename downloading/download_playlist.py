@@ -19,7 +19,7 @@ async def find_playlists_kind(client) -> int:
     return int(input("Введите нужный kind: "))
 
 
-async def main_playlist():
+async def download_yandex_playlist():
     load_dotenv()
     token = os.getenv("token")
     # token = "y0__xDRoJLwBhje-AYg0uGb4BaJqu1Jv8zkgOQyvwObkn1l8AiNig"
@@ -44,7 +44,7 @@ async def get_tracks(client, kind) -> list:
 
 async def downloading(tracks) -> None:
     # Создаем папку downloaded_music, если её нет
-    os.makedirs("C:/Users/shteps/Downloads/god_downloader/", exist_ok=True)
+    os.makedirs("C:/Users/shteps/Downloads/OmniLoader/", exist_ok=True)
 
     for i, track in enumerate(tracks):
         # Берем название и артиста из самого объекта трека
@@ -55,7 +55,7 @@ async def downloading(tracks) -> None:
 
         # Формируем имя файла: Артист - Название.mp3
         # Это предотвратит перезапись файлов, если названия треков совпадают
-        filename = f"downloaded_music/{artist} - {title}.mp3"
+        filename = f"OmniLoader/{artist} - {title}.mp3"
 
         try:
             # print(f"Downloading {i + 1}/{len(tracks)}: {artist} - {title}...")
@@ -68,6 +68,6 @@ async def downloading(tracks) -> None:
 if __name__ == "__main__":
     print("Downloading started...")
     try:
-        asyncio.run(main_playlist())
-    except KeyboardInterrupt:
+        asyncio.run(download_yandex_playlist())
+    except EOFError:
         print("Exit!")

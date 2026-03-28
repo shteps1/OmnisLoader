@@ -11,7 +11,7 @@ def sanitize_filename(name):
     return re.sub(r'[<>:"/\\|?*]', "", name).strip()
 
 
-def main_single_track():
+def download_yandex_track():
     load_dotenv()
     token = os.getenv("token")
     client = Client(token).init()
@@ -38,7 +38,7 @@ def get_track(client, url):
 
 def downloading(track) -> None:
     # Создаем папку downloaded_music, если её нет
-    os.makedirs("C:/Users/shteps/Downloads/god_downloader/", exist_ok=True)
+    os.makedirs("C:/Users/shteps/Downloads/OmniLoader/", exist_ok=True)
     # Берем название и артиста из самого объекта трека
     title = sanitize_filename(track.title)
     artist = sanitize_filename(
@@ -46,7 +46,7 @@ def downloading(track) -> None:
     )
     # Формируем имя файла: Артист - Название.mp3
     # Это предотвратит перезапись файлов, если названия треков совпадают
-    filename = f"C:/Users/shteps/Downloads/god_downloader/{artist} - {title}.mp3"
+    filename = f"C:/Users/shteps/Downloads/OmniLoader/{artist} - {title}.mp3"
     try:
         # print(f"Downloading {i + 1}/{len(tracks)}: {artist} - {title}...")
         track.download(filename)
@@ -57,6 +57,6 @@ def downloading(track) -> None:
 
 if __name__ == "__main__":
     try:
-        main_single_track()
+        download_yandex_track()
     except KeyboardInterrupt:
         print("Exit!")

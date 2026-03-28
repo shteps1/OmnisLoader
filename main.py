@@ -1,8 +1,8 @@
-import yt_dlp
 import asyncio
+import yt_dlp
 
-from downloading.download_playlist import main_playlist
-from downloading.download_single_track import main_single_track
+from downloading.download_playlist import download_yandex_playlist
+from downloading.download_single_track import download_yandex_track
 
 
 def choose_source() -> str:
@@ -25,7 +25,7 @@ def choose_format() -> dict:
         # "restrictfilenames": True,
         "proxy": "",
         "paths": {
-            "home": "C:/Users/shteps/Downloads/god_downloader/",
+            "home": "C:/Users/shteps/Downloads/OmniLoader/",
         },
         "windowsfilenames": True,  # имена файлов совместимые с windows
         "addmetadata": True,  # добавляет файлу метаданные
@@ -106,18 +106,18 @@ def progress_bar(d):
 async def downloading_from_YandexMusic() -> None:
     print("1[только один элемент]\n2[весь плейлист]")
     choosen_items = input("Выберите: ")
-    print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/god_downloader/")
-    
+    print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/OmniLoader/")
+
     if choosen_items == "1":
-        main_single_track()
-        
+        download_yandex_track()
+
     elif choosen_items == "2":
-        await main_playlist()
+        await download_yandex_playlist()
 
 
 async def downloading_from_web(options: dict) -> None:
     user_input = input("Введите ссылки через запятую: ")
-    print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/god_downloader/")
+    print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/OmniLoader/")
     urls = [url.strip() for url in user_input.split(",") if url.strip()]
 
     with yt_dlp.YoutubeDL(options) as ydl:
