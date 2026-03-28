@@ -1,4 +1,3 @@
-import asyncio
 import yt_dlp
 
 from downloading.download_playlist import download_yandex_playlist
@@ -22,21 +21,21 @@ def choose_format() -> dict:
         "format": "",
         "outtmpl": "",
         "merge_output_format": "mp4",  # ffmpeg нужен
-        # "restrictfilenames": True,
         "proxy": "",
         "paths": {
             "home": "C:/Users/shteps/Downloads/OmniLoader/",
         },
+        "restrictfilenames": True,
         "windowsfilenames": True,  # имена файлов совместимые с windows
-        "addmetadata": True,  # добавляет файлу метаданные
         "geo_bypass": True,
         # глушим стандартный вывод и выводим свое
         "quiet": True,
         "no_warnings": True,
         "progress_hooks": [progress_bar],  # Вывод только прогресс-бара и ошибок
         # Определяем список для добавления метаданных сразу — будем добавлять по условию ниже
+        # "writethumbnail": True,
         "postprocessors": [
-            {"key": "FFmpegMetadata", "add_metadata": True},
+            {"key": "FFmpegMetadata"},
             {"key": "EmbedThumbnail"},
         ],
         # Ретраи при обрыве соединения и время ожидания ответа от сервера
@@ -44,6 +43,7 @@ def choose_format() -> dict:
         "retries": 10,
         "fragment_retries": 10,
         # Имитация браузера и Куки для Яндекс Музыки — выберите один вариант:
+        "cookiesfrombrowser": ("firefox", None, None, None),
         "http_headers": {
             "User-Agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -103,7 +103,7 @@ def progress_bar(d):
         print("\n❌ Ошибка при загрузке")
 
 
-async def downloading_from_YandexMusic() -> None:
+def downloading_from_YandexMusic() -> None:
     print("1[только один элемент]\n2[весь плейлист]")
     choosen_items = input("Выберите: ")
     print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/OmniLoader/")
@@ -112,35 +112,35 @@ async def downloading_from_YandexMusic() -> None:
         download_yandex_track()
 
     elif choosen_items == "2":
-        await download_yandex_playlist()
+        download_yandex_playlist()
 
 
-async def downloading_from_web(options: dict) -> None:
+def downloading_from_web(options: dict) -> None:
     user_input = input("Введите ссылки через запятую: ")
     print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/OmniLoader/")
     urls = [url.strip() for url in user_input.split(",") if url.strip()]
 
     with yt_dlp.YoutubeDL(options) as ydl:
-        await ydl.download(urls)
+        ydl.download(urls)
 
 
-async def main():
+def main():
     print(
         "ЧТОБЫ ВЫЙТИ CTRL + C\nПривет, я могу скачать все\nНапример: YouTube, Яндекс музыка, TikTok, SoundCloud, Twitch, instagram итд\n-------------------------------------------"
     )
     source = choose_source()
 
     if source == "1":
-        await downloading_from_YandexMusic()
+        downloading_from_YandexMusic()
 
     elif source == "2":
         downloading_format = choose_format()
-        await downloading_from_web(downloading_format)
+        downloading_from_web(downloading_format)
 
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
-    except EOFError:
+        main()
+    except KeyboardInterrupt:
         print("")
         print("Выход...")
