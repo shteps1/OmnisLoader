@@ -1,4 +1,5 @@
 import yt_dlp
+import os
 
 from downloading.download_playlist import download_yandex_playlist
 from downloading.download_single_track import download_yandex_track
@@ -21,7 +22,6 @@ def choose_format() -> dict:
         "format": "",
         "outtmpl": "",
         "merge_output_format": "mp4",  # ffmpeg нужен
-        "proxy": "",
         "paths": {
             "home": "C:/Users/shteps/Downloads/OmniLoader/",
         },
@@ -33,7 +33,7 @@ def choose_format() -> dict:
         "no_warnings": True,
         "progress_hooks": [progress_bar],  # Вывод только прогресс-бара и ошибок
         # Определяем список для добавления метаданных сразу — будем добавлять по условию ниже
-        # "writethumbnail": True,
+        "writethumbnail": True,
         "postprocessors": [
             {"key": "FFmpegMetadata"},
             {"key": "EmbedThumbnail"},
@@ -43,7 +43,6 @@ def choose_format() -> dict:
         "retries": 10,
         "fragment_retries": 10,
         # Имитация браузера и Куки для Яндекс Музыки — выберите один вариант:
-        "cookiesfrombrowser": ("firefox", None, None, None),
         "http_headers": {
             "User-Agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -98,6 +97,7 @@ def progress_bar(d):
 
     elif d["status"] == "finished":
         print(f"\n✅ Скачано: {d['filename']}")
+        os.startfile("C:/Users/shteps/Downloads/OmniLoader/")
 
     elif d["status"] == "error":
         print("\n❌ Ошибка при загрузке")
