@@ -22,7 +22,6 @@ async def find_playlists_kind(client) -> int:
 async def download_yandex_playlist():
     load_dotenv()
     token = os.getenv("token")
-    # token = "y0__xDRoJLwBhje-AYg0uGb4BaJqu1Jv8zkgOQyvwObkn1l8AiNig"
     client = await ClientAsync(token).init()
     kind = await find_playlists_kind(client)
     tracks = await get_tracks(client, kind)
