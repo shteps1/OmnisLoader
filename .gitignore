@@ -208,3 +208,5 @@ __marimo__/
 
 ffmpeg-*.exe
 ffmpeg-*.zip
+ffmpeg.exe
+ffprobe.exe
