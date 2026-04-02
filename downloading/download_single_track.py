@@ -15,7 +15,6 @@ def download_yandex_track():
     load_dotenv()
     token = os.getenv("token")
     client = Client(token).init()
-    # token = "y0__xDRoJLwBhje-AYg0uGb4BaJqu1Jv8zkgOQyvwObkn1l8AiNig"
     url = input("Введите ссылку на трек: ")
     print("Загрузка началась...")
 
