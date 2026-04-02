@@ -3,7 +3,7 @@ import os
 import re
 
 from dotenv import load_dotenv
-from yandex_music import ClientAsync
+from yandex_music import Client
 
 
 # Функция для очистки имени файла от запрещенных символов
@@ -12,37 +12,37 @@ def sanitize_filename(name):
     return re.sub(r'[<>:"/\\|?*]', "", name).strip()
 
 
-async def find_playlists_kind(client) -> int:
-    user_playlists = await client.users_playlists_list()
+def find_playlists_kind(client) -> int:
+    user_playlists = client.users_playlists_list()
     for playlist in user_playlists:
         print(f"kind={playlist.kind}  —  {playlist.title}")
     return int(input("Введите нужный kind: "))
 
 
-async def download_yandex_playlist():
+def download_yandex_playlist():
     load_dotenv()
     token = os.getenv("token")
     # token = "y0__xDRoJLwBhje-AYg0uGb4BaJqu1Jv8zkgOQyvwObkn1l8AiNig"
-    client = await ClientAsync(token).init()
-    kind = await find_playlists_kind(client)
-    tracks = await get_tracks(client, kind)
-    await downloading(tracks)
+    client = Client(token).init()
+    kind = find_playlists_kind(client)
+    tracks = get_tracks(client, kind)
+    downloading(tracks)
 
 
-async def get_tracks(client, kind) -> list:
-    playlist = await client.users_playlists(kind=kind)
-    tracks_info = await playlist.fetch_tracks_async()
+def get_tracks(client, kind) -> list:
+    playlist = client.users_playlists(kind=kind)
+    tracks_info = playlist.fetch_tracks_async()
     tracks = []
 
     for track_short in tracks_info:
         # Получаем полную информацию о треке
-        track = await track_short.fetch_track_async()
+        track = track_short.fetch_track_async()
         tracks.append(track)
 
     return tracks
 
 
-async def downloading(tracks) -> None:
+def downloading(tracks) -> None:
     # Создаем папку downloaded_music, если её нет
     os.makedirs("C:/Users/shteps/Downloads/OmniLoader/", exist_ok=True)
 
@@ -59,7 +59,7 @@ async def downloading(tracks) -> None:
 
         try:
             # print(f"Downloading {i + 1}/{len(tracks)}: {artist} - {title}...")
-            await track.download_async(filename)
+            track.download_async(filename)
             print(f"✅ Finished: {filename}")
         except Exception as e:
             print(f"❌ Error downloading {title}: {e}")
@@ -68,6 +68,6 @@ async def downloading(tracks) -> None:
 if __name__ == "__main__":
     print("Downloading started...")
     try:
-        asyncio.run(download_yandex_playlist())
-    except EOFError:
+        download_yandex_playlist()
+    except KeyboardInterrupt:
         print("Exit!")
