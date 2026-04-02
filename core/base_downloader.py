@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Base(ABC):
+class BaseDownloader(ABC):
     @abstractmethod
-    def load(self):
+    def download(self):
         pass

@@ -1,4 +1,4 @@
-class DownloadConfig:
+class WebDownloadConfig:
     def __init__(self, choosen_items: str, yt_dlp_format: str) -> None:
         self.choosen_items = choosen_items
         self.yt_dlp_format = yt_dlp_format

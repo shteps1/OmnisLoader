@@ -1,10 +1,10 @@
 import yt_dlp
 
-from core.base import Base
+from core.base_downloader import BaseDownloader
 
-class WebDownloader(Base):
-    def load(self, download_config: dict, user_input: str):
-        print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C/Users/shteps/Downloads/OmniLoader/")
+class WebDownloader(BaseDownloader):
+    def download(self, download_config: dict, user_input: str):
+        print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C:/Users/shteps/Downloads/OmniLoader/")
 
         urls = [url.strip() for url in user_input.split(",") if url.strip()]
 
