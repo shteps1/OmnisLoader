@@ -21,17 +21,17 @@ def main():
         "ЧТОБЫ ВЫЙТИ CTRL + C\nПривет, я могу скачать все\nНапример: YouTube, Яндекс музыка, TikTok, SoundCloud, Twitch, instagram итд\n-------------------------------------------"
     )
 
-    choosen_items = input("Выберите: 1[только один элемент] [весь плейлист]: ")
+    choosen_items = input("Выберите: 1[только один элемент] 2[весь плейлист]: ")
     yt_dlp_format = input(
         "Выберите формат 1[Лучшее качество видео и аудио]2[Видео 1080p и лучшее аудио]\n3[Только аудио]: "
     )
-
+    user_inputted_url = input("Введите ссылки через запятую: ")
+    
     download_config = DownloadConfig(choosen_items, yt_dlp_format).get_options()
-    print(download_config)
-    web_downloader = WebDownloader(
-        download_config, input("Введите ссылки через запятую: ")
-    )
-
+    web_downloader = WebDownloader()
+    web_downloader.load(download_config, user_inputted_url)
+    
+    
 
 if __name__ == "__main__":
     try:

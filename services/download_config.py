@@ -19,10 +19,6 @@ class DownloadConfig:
             "no_warnings": True,
             # "progress_hooks": [logger],  Вывод только прогресс-бара и ошибок
             # Определяем список для добавления метаданных сразу — будем добавлять по условию ниже
-            "writethumbnail": True,
-            "postprocessors": [
-                {"key": "FFmpegMetadata"},
-            ],
             # Ретраи при обрыве соединения и время ожидания ответа от сервера
             "socket_timeout": 30,
             "retries": 10,
@@ -51,23 +47,32 @@ class DownloadConfig:
             ydl_options["format"] = (
                 "bestvideo+bestaudio/best"  # лучший готовый поток без склейки
             )
+            ydl_options["postprocessors"] = [
+                {"key": "FFmpegMetadata"},
+                {"key": "EmbedThumbnail"},
+            ]
 
         elif self.yt_dlp_format == "2":
             ydl_options["format"] = (
                 "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080]"  # до 1080p, готовый поток
             )
+            ydl_options["postprocessors"] = [
+                {"key": "FFmpegMetadata"},
+                {"key": "EmbedThumbnail"},
+            ]
 
         elif self.yt_dlp_format == "3":
             ydl_options["format"] = "bestaudio/best"  # только аудио — ffmpeg не нужен
             ydl_options["writethumbnail"] = True  # скачивает обложку
             # Конвертация должна идти ПЕРЕД метаданными и обложкой
             ydl_options["postprocessors"] = [
-                {"key": "EmbedThumbnail"},
                 {
                     "key": "FFmpegExtractAudio",
                     "preferredcodec": "mp3",
                     "preferredquality": "320",
                 },
+                {"key": "FFmpegMetadata"},
+                {"key": "EmbedThumbnail"},
             ]
 
         return ydl_options
