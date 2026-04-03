@@ -38,25 +38,40 @@ def main():
 
     choosen_items = input("Выберите: 1[только один элемент] 2[весь плейлист]: ")
     source = input("Выберите источник: 1[YouTube & etc.] 2[Яндекс музыка]: ")
+    user_inputted_url = input("Введите ссылки через запятую: ")
     if source == "1":
         yt_dlp_format = input(
             "Выберите формат 1[Лучшее качество видео и аудио] 2[Видео 1080p и лучшее аудио] 3[Только аудио]: "
         )
-        user_inputted_url = input("Введите ссылки через запятую: ")
-
-        download_config = WebDownloadConfig(choosen_items, yt_dlp_format).get_options()
+        web_download_config = WebDownloadConfig(
+            choosen_items, yt_dlp_format
+        ).get_options()
         web_downloader = WebDownloader()
-        web_downloader.download(download_config, user_inputted_url)
+        web_downloader.download(web_download_config, user_inputted_url)
 
     elif source == "2":
+        # print(
+        #     [
+        #         user_inputted_url.strip()
+        #         for url in user_inputted_url.split(",")
+        #         if url.strip()
+        #     ]
+        # )
+
         load_dotenv()
         token = os.getenv("token")
         client = Client(token).init()
-        user_inputted_url = input("Введите ссылку на трек: ")
-        kind = find_playlists_kind(client)
-        yandex_download_config = YandexDownloadConfig(client, kind, user_inputted_url).get_single_track()
-        yandex_downloader = YandexSingleTrackDownloader()
-        yandex_downloader.download(yandex_download_config)
+        # user_inputted_url = input("Введите ссылку на трек: ")
+        playlist_kind = find_playlists_kind(client)
+        yandex_download_config = YandexDownloadConfig(
+            client, playlist_kind, user_inputted_url
+        ).get_single_track(
+            [url.strip() for url in user_inputted_url.split(",") if url.strip()]
+        )
+        yandex_single_track_downloader = YandexSingleTrackDownloader()
+        yandex_single_track_downloader.download(
+            yandex_download_config
+        )
         print("Загрузка началась...")
 
 

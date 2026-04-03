@@ -22,15 +22,18 @@ class YandexDownloadConfig(BaseDownloadConfig):
 
         return tracks
 
-    def get_single_track(self):
-        match = re.search(r"/album/(\d+)/track/(\d+)", self.user_input)
-        if not match:
-            raise ValueError("Неверный формат ссылки")
+    def get_single_track(self, urls):
+        tracks = []
+        for i, track in enumerate(urls):
+            match = re.search(r"/album/(\d+)/track/(\d+)", self.user_input)
+            if not match:
+                raise ValueError("Неверный формат ссылки")
 
-        album_id = match.group(1)
-        track_id = match.group(2)
-        track_key = f"{track_id}:{album_id}"
+            album_id = match.group(1)
+            track_id = match.group(2)
+            track_key = f"{track_id}:{album_id}"
 
-        track = self.client.tracks([track_key])[0]
-
-        return track
+            track = self.client.tracks([track_key])[0]
+            tracks.append(track)
+        print(tracks)
+        return tracks

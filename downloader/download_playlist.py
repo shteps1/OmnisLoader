@@ -31,12 +31,12 @@ def download_yandex_playlist():
 
 def get_tracks(client, kind) -> list:
     playlist = client.users_playlists(kind=kind)
-    tracks_info = playlist.fetch_tracks_async()
+    tracks_info = playlist.fetch_tracks()
     tracks = []
 
     for track_short in tracks_info:
         # Получаем полную информацию о треке
-        track = track_short.fetch_track_async()
+        track = track_short.fetch_track()
         tracks.append(track)
 
     return tracks
@@ -59,7 +59,7 @@ def downloading(tracks) -> None:
 
         try:
             # print(f"Downloading {i + 1}/{len(tracks)}: {artist} - {title}...")
-            track.download_async(filename)
+            track.download(filename)
             print(f"✅ Finished: {filename}")
         except Exception as e:
             print(f"❌ Error downloading {title}: {e}")
