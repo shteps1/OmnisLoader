@@ -1,7 +1,11 @@
-class WebDownloadingConfig:
-    def __init__(self, choosen_items: str, yt_dlp_format: str) -> None:
+from core.base_downloading_config import BaseDownloadingConfig
+
+
+class WebDownloadingConfig(BaseDownloadingConfig):
+    def __init__(self, choosen_items: str, yt_dlp_format: str, os_name: str) -> None:
         self.choosen_items = choosen_items
         self.yt_dlp_format = yt_dlp_format
+        self.os_name = os_name
 
     def get_options(self) -> dict:
         ydl_options = {
@@ -9,7 +13,7 @@ class WebDownloadingConfig:
             "outtmpl": "",
             "merge_output_format": "mp4",  # ffmpeg нужен
             "paths": {
-                "home": "C:/Users/shteps/Downloads/OmniLoader/",
+                "home": f"{self.get_download_paths(self.os_name)}",
             },
             "restrictfilenames": True,
             "windowsfilenames": True,  # имена файлов совместимые с windows

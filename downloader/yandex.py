@@ -1,26 +1,21 @@
-import os
-
-from core.base_download_config import BaseDownloadConfig
+from core.base_downloading_config import BaseDownloadingConfig
 from core.base_downloader import BaseDownloader
 
 
 class YandexTracksDownloader(BaseDownloader):
-    def download(self, tracks: list) -> None:
-        print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C:/Users/shteps/Downloads/OmniLoader/")
-
-        # Создаем папку downloaded_music, если её нет
-        os.makedirs("C:/Users/shteps/Downloads/OmniLoader/", exist_ok=True)
+    def download(self, tracks: list, downloading_path: str) -> None:
+        print(f"РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: {downloading_path}")
 
         for i, track in enumerate(tracks, start=1):
             # Берем название и артиста из самого объекта трека
-            title = BaseDownloadConfig.sanitize_filename(track.title)
-            artist = BaseDownloadConfig.sanitize_filename(
+            title = BaseDownloadingConfig.sanitize_filename(track.title)
+            artist = BaseDownloadingConfig.sanitize_filename(
                 (track.artists[0].name if track.artists else "НЕИЗВЕСТНЫЙ АРТИСТ")
             )
 
             # Формируем имя файла: Артист - Название.mp3
             # Это предотвратит перезапись файлов, если названия треков совпадают
-            filename = f"C:/Users/shteps/Downloads/OmniLoader/{artist} - {title}.mp3"
+            filename = f"{downloading_path}/{artist} - {title}.mp3"
 
             try:
                 track.download(filename)
@@ -28,4 +23,3 @@ class YandexTracksDownloader(BaseDownloader):
 
             except Exception as e:
                 print(f"❌ ОШИБКА ЗАГРУЗКИ {title}: {e}")
-
