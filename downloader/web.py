@@ -3,10 +3,10 @@ import yt_dlp
 from core.base_downloader import BaseDownloader
 
 class WebDownloader(BaseDownloader):
-    def download(self, download_config: dict, user_input: str):
+    def download(self, web_download_config: dict, user_input: str) -> None:
         print("РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: C:/Users/Имя_Пользователя/Downloads/OmniLoader/")
 
         urls = [url.strip() for url in user_input.split(",") if url.strip()]
 
-        with yt_dlp.YoutubeDL(download_config) as ydl:
+        with yt_dlp.YoutubeDL(web_download_config) as ydl:
             ydl.download(urls)
