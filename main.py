@@ -1,8 +1,6 @@
 # библиотеки
-from base64 import urlsafe_b64decode
 import os
 import platform
-from doctest import OPTIONFLAGS_BY_NAME
 
 from dotenv import load_dotenv
 from yandex_music import Client
@@ -25,11 +23,13 @@ def find_playlists_kind(client) -> int:
 
 def choose_format():
     os_name = platform.system()  # показывает ОС пользователя
-    choosen_items = input("Выберите: 1[только один элемент] 2[весь плейлист]: ")
-    source = input("Выберите источник: 1[YouTube & etc.] 2[Яндекс музыка]: ")
+    username = input("Введите имя пользователя вашего пк: ").strip()
+    username = "shteps"
+    choosen_items = input("Выберите: 1[только один элемент] 2[весь плейлист]: ").strip()
+    source = input("Выберите источник: 1[YouTube & etc.] 2[Яндекс музыка]: ").strip()
     user_inputted_url = input("Введите ссылки через запятую: ")
     urls = [url.strip() for url in user_inputted_url.split(",") if url.strip()]
-    return os_name, choosen_items, source, urls
+    return os_name, username, choosen_items, source, urls
 
 
 def main():
@@ -39,13 +39,15 @@ def main():
     )
 
     # получаем данные от пользователя
-    os_name, choosen_items, source, urls = choose_format()
+    os_name, username, choosen_items, source, urls = choose_format()
 
     if source == "1":
         yt_dlp_format = input(
             "Выберите формат 1[Лучшее качество видео и аудио] 2[Видео 1080p и лучшее аудио] 3[Только аудио]: "
         )
-        web_download_config = WebDownloadingConfig(choosen_items, yt_dlp_format, os_name).get_options()
+        web_download_config = WebDownloadingConfig(
+            choosen_items, yt_dlp_format, os_name, username
+        ).get_options()
         web_downloader = WebDownloader()
         web_downloader.download(web_download_config, urls)
 
@@ -56,21 +58,21 @@ def main():
         client = Client(token).init()
 
         # конфиг для загрузки треков с Яндекс Музыки
-        yandex_downloading_config = YandexDownloadingConfig(
-            client, urls, os_name
-        )
+        yandex_downloading_config = YandexDownloadingConfig(client, urls, os_name, username)
 
         if choosen_items == "1":
-            tracks = yandex_downloading_config.get_tracks(
-                urls
-            )
+            tracks = yandex_downloading_config.get_tracks(urls)
 
             # загрузчик для треков с Яндекс Музыки
             yandex_single_track_downloader = YandexTracksDownloader()
             yandex_single_track_downloader.download(tracks)
 
         elif choosen_items == "2":
-            print("ok")
+            kind = find_playlists_kind(client)
+            tracks = yandex_downloading_config.get_playlist_tracks(kind)
+            # загрузчик для треков с Яндекс Музыки
+            # yandex_playlist_downloader = YandexPlaylistDownloader()
+            # yandex_playlist_downloader.download(tracks)
 
     else:
         print("Неверный источник")

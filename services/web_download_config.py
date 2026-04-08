@@ -2,10 +2,11 @@ from core.base_downloading_config import BaseDownloadingConfig
 
 
 class WebDownloadingConfig(BaseDownloadingConfig):
-    def __init__(self, choosen_items: str, yt_dlp_format: str, os_name: str) -> None:
+    def __init__(self, choosen_items: str, yt_dlp_format: str, os_name: str, username: str) -> None:
         self.choosen_items = choosen_items
         self.yt_dlp_format = yt_dlp_format
         self.os_name = os_name
+        self.username = username
 
     def get_options(self) -> dict:
         ydl_options = {
@@ -13,7 +14,7 @@ class WebDownloadingConfig(BaseDownloadingConfig):
             "outtmpl": "",
             "merge_output_format": "mp4",  # ffmpeg нужен
             "paths": {
-                "home": f"{self.get_download_paths(self.os_name)}",
+                "home": f"{self.get_download_paths(self.os_name, self.username)}",
             },
             "restrictfilenames": True,
             "windowsfilenames": True,  # имена файлов совместимые с windows
