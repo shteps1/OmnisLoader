@@ -22,7 +22,7 @@ def find_playlists_kind(client) -> int:
 def download_yandex_playlist():
     load_dotenv()
     token = os.getenv("token")
-    # token = "y0__xDRoJLwBhje-AYg0uGb4BaJqu1Jv8zkgOQyvwObkn1l8AiNig"
+
     client = Client(token).init()
     kind = find_playlists_kind(client)
     tracks = get_tracks(client, kind)
