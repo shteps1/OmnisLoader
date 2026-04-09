@@ -11,6 +11,11 @@ class YandexDownloadingConfig(BaseDownloadingConfig):
         self.os_name = os_name
         self.username = username
 
+    def create_downloading_folder(self) -> None:
+        os.makedirs(
+            f"{self.get_download_paths(self.os_name, self.username)}", exist_ok=True
+        )
+
     def get_playlist_tracks(self, kind: int) -> list:
         playlist = self.client.users_playlists(kind=kind)
         tracks_info = playlist.fetch_tracks()
@@ -20,7 +25,6 @@ class YandexDownloadingConfig(BaseDownloadingConfig):
             track = track_short.fetch_track()
             tracks.append(track)
 
-        os.makedirs(f"{self.get_download_paths(self.os_name, self.username)}", exist_ok=True)
         return tracks
 
     def get_tracks(self, urls: list) -> list:
@@ -37,6 +41,5 @@ class YandexDownloadingConfig(BaseDownloadingConfig):
 
             track = self.client.tracks([track_key])[0]
             tracks.append(track)
-
-        os.makedirs(f"{self.get_download_paths(self.os_name, self.username)}", exist_ok=True)
+            
         return tracks

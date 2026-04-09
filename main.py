@@ -59,6 +59,7 @@ def main():
 
         # конфиг для загрузки треков с Яндекс Музыки
         yandex_downloading_config = YandexDownloadingConfig(client, urls, os_name, username)
+        yandex_downloading_config.create_downloading_folder()
 
         if choosen_items == "1":
             tracks = yandex_downloading_config.get_tracks(urls)
@@ -70,7 +71,7 @@ def main():
         elif choosen_items == "2":
             kind = find_playlists_kind(client)
             tracks = yandex_downloading_config.get_playlist_tracks(kind)
-            # загрузчик для треков с Яндекс Музыки
+            # загрузчик для плейлиста с Яндекс Музыки
             # yandex_playlist_downloader = YandexPlaylistDownloader()
             # yandex_playlist_downloader.download(tracks)
 
