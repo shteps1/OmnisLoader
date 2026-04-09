@@ -7,7 +7,7 @@ from yandex_music import Client
 
 # загрузчики
 from downloader.web import WebDownloader
-from downloader.yandex import YandexTracksDownloader
+from downloader.yandex import YandexPlaylistDownloader, YandexTracksDownloader
 
 # конфиги
 from services.web_download_config import WebDownloadingConfig
@@ -23,7 +23,7 @@ def find_playlists_kind(client) -> int:
 
 def choose_format():
     os_name = platform.system()  # показывает ОС пользователя
-    username = input("Введите имя пользователя вашего пк: ").strip()
+    # username = input("Введите имя пользователя вашего пк: ").strip()
     username = "shteps"
     choosen_items = input("Выберите: 1[только один элемент] 2[весь плейлист]: ").strip()
     source = input("Выберите источник: 1[YouTube & etc.] 2[Яндекс музыка]: ").strip()
@@ -58,22 +58,22 @@ def main():
         client = Client(token).init()
 
         # конфиг для загрузки треков с Яндекс Музыки
-        yandex_downloading_config = YandexDownloadingConfig(client, urls, os_name, username)
+        yandex_downloading_config = YandexDownloadingConfig(client, os_name, username)
         yandex_downloading_config.create_downloading_folder()
 
         if choosen_items == "1":
-            tracks = yandex_downloading_config.get_tracks(urls)
+            tracks, path = yandex_downloading_config.get_tracks(urls)
 
             # загрузчик для треков с Яндекс Музыки
             yandex_single_track_downloader = YandexTracksDownloader()
-            yandex_single_track_downloader.download(tracks)
+            yandex_single_track_downloader.download(tracks, path)
 
         elif choosen_items == "2":
             kind = find_playlists_kind(client)
-            tracks = yandex_downloading_config.get_playlist_tracks(kind)
+            tracks, path = yandex_downloading_config.get_playlist_tracks(kind)
             # загрузчик для плейлиста с Яндекс Музыки
-            # yandex_playlist_downloader = YandexPlaylistDownloader()
-            # yandex_playlist_downloader.download(tracks)
+            yandex_playlist_downloader = YandexPlaylistDownloader()
+            yandex_playlist_downloader.download(tracks, path)
 
     else:
         print("Неверный источник")

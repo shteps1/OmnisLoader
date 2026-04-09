@@ -9,9 +9,6 @@ class WebDownloadingConfig(BaseDownloadingConfig):
         self.yt_dlp_format = yt_dlp_format
         self.os_name = os_name
         self.username = username
-        
-    
-     
 
     def choose_format(self, ydl_options: dict):
         if self.yt_dlp_format == "1":

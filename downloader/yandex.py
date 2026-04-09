@@ -1,9 +1,9 @@
-from core.base_downloading_config import BaseDownloadingConfig
 from core.base_downloader import BaseDownloader
+from core.base_downloading_config import BaseDownloadingConfig
 
 
 class YandexTracksDownloader(BaseDownloader):
-    def download(self, tracks: list, downloading_path: str) -> None:
+    def download(self, tracks: list, downloading_path: str):
         print(f"РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: {downloading_path}")
 
         for i, track in enumerate(tracks, start=1):
@@ -23,9 +23,10 @@ class YandexTracksDownloader(BaseDownloader):
 
             except Exception as e:
                 print(f"❌ ОШИБКА ЗАГРУЗКИ {title}: {e}")
-                
+
+
 class YandexPlaylistDownloader(BaseDownloader):
-    def download(self, tracks: list, downloading_path: str) -> None:
+    def download(self, tracks: list, downloading_path: str):
         print(f"РАСПОЛОЖЕНИЕ СКАЧАННЫХ ФАЙЛОВ: {downloading_path}")
 
         for i, track in enumerate(tracks, start=1):
